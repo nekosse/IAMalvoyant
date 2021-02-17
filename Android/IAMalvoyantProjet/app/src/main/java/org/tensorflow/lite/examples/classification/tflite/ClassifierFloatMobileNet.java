@@ -54,15 +54,12 @@ public class ClassifierFloatMobileNet extends Classifier {
 
   @Override
   protected String getModelPath() {
-    // you can download this file from
-    // see build.gradle for where to obtain this file. It should be auto
-    // downloaded into assets.
-    return "mobilenet_v1_1.0_224.tflite";
+    return "model2.tflite";
   }
 
   @Override
   protected String getLabelPath() {
-    return "labels.txt";
+    return "labels2.txt";
   }
 
   @Override
@@ -72,9 +69,9 @@ public class ClassifierFloatMobileNet extends Classifier {
 
   @Override
   protected void addPixelValue(int pixelValue) {
-    imgData.putFloat((((pixelValue >> 16) & 0xFF) - IMAGE_MEAN) / IMAGE_STD);
-    imgData.putFloat((((pixelValue >> 8) & 0xFF) - IMAGE_MEAN) / IMAGE_STD);
-    imgData.putFloat(((pixelValue & 0xFF) - IMAGE_MEAN) / IMAGE_STD);
+    imgData.putFloat((((pixelValue >> 16) & 0xFF)));
+    imgData.putFloat((((pixelValue >> 8) & 0xFF)));
+    imgData.putFloat(((pixelValue & 0xFF)));
   }
 
   @Override

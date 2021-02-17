@@ -1,0 +1,7 @@
+ascenseur ferme
+ascenseur ouvert
+escalier descendant
+escalier montant
+Porte fermée
+Porte ouverte
+prise

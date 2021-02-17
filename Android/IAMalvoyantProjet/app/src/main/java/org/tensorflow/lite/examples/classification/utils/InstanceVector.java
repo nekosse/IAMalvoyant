@@ -9,7 +9,7 @@ public class InstanceVector implements Serializable {
 
     private static final long serialVersionUID = -5802571941999463497L;
 
-    private static final int VECTOR_SIZE = 1001;
+    private static final int VECTOR_SIZE = 8;
 
     private String instanceName;
     private Vector<Double> vector;

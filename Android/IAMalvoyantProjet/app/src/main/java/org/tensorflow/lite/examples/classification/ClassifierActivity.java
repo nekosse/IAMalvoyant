@@ -79,6 +79,7 @@ public class ClassifierActivity extends CameraActivity implements OnImageAvailab
   private static final boolean MAINTAIN_ASPECT = true;
   private static final Size DESIRED_PREVIEW_SIZE = new Size(640, 480);
   private static final float TEXT_SIZE_DIP = 10;
+  private static final double SEUIL_DE_DETECTION = 0.06;
   private Bitmap rgbFrameBitmap = null;
   private Bitmap croppedBitmap = null;
   private Bitmap cropCopyBitmap = null;
@@ -109,6 +110,8 @@ public class ClassifierActivity extends CameraActivity implements OnImageAvailab
   private Set<InstanceVector> customInstances = new HashSet<>();
   //New instance vector being create
   private InstanceVector currentNewInstanceVector;
+
+  String resPrec = "";
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -295,7 +298,6 @@ public class ClassifierActivity extends CameraActivity implements OnImageAvailab
 
 
     if(this.mViewMode==VIEW_ClASSIFY) {
-
       runInBackground(
               new Runnable() {
                 @Override
@@ -332,25 +334,35 @@ public class ClassifierActivity extends CameraActivity implements OnImageAvailab
                                   InstanceVector instanceVector = new InstanceVector("unknown");
 
                                   int i = 0;
-                                  while(results.get(i).getConfidence() > 0d){
+                                  while(i<7){
                                     instanceVector.setVectorValue(classes.indexOf(results.get(i).getTitle().toLowerCase()),
                                             (double) results.get(i).getConfidence());
                                     i++;
                                   }
-                                  String instanceName = one_PPV(instanceVector);
-                                  if(!instanceName.isEmpty())
-                                    instanceVector.setInstanceName(instanceName);
+                                  //String instanceName = one_PPV(instanceVector);
+                                    //if(!instanceName.isEmpty())
+                                    instanceVector.setInstanceName(results.get(0).getTitle());
 
-                                  Classifier.Recognition reco = new Classifier.Recognition(instanceName, instanceName, 1f, null);
-                                  results.add(0, reco);
+                                  //Classifier.Recognition reco = new Classifier.Recognition(instanceName, instanceName, 1f, null);
+                                  //results.add(0, reco);
 
                                   showResultsInBottomSheet(results);
 
-                                  if(diffTimeSpeak > 5000L){
-                                    lastRecoTime = currentTime;
+                                  if(results.get(0).getConfidence() > SEUIL_DE_DETECTION && !results.get(0).getTitle().equals(resPrec)) {
+                                    resPrec = results.get(0).getTitle();
+                                    showResultsInLabelTextViewGreen(resPrec);
+                                    speaker.speak(resPrec);
+                                  }
+
+                                  if(diffTimeSpeak > 3000L){
+                                    if(results.get(0).getConfidence() <= SEUIL_DE_DETECTION) {
+                                      lastRecoTime = currentTime;
+                                      resPrec = "Aucun élément détecté";
+                                      showResultsInLabelTextViewRed(resPrec);
+                                    }
                                     //Trying to vocalize here
-                                    className = instanceVector.getInstanceName();
-                                    speaker.speak(className);
+                                    //className = instanceVector.getInstanceName();
+                                    //speaker.speak(className);
                                   }
 
                                 }
@@ -456,8 +468,12 @@ public class ClassifierActivity extends CameraActivity implements OnImageAvailab
     double minDistance = Double.MAX_VALUE;
 
     for(InstanceVector instance : instances){
-        double currentDistance = EuclidianCalculator.euclidianDistance(unknownInstance.getVector(),instance.getVector());
+      //LOGGER.v("INSTANCE: %s", instance);
+      //Log.i("TEST", "TEEEESSSTt "+instance );
+
+      double currentDistance = EuclidianCalculator.euclidianDistance(unknownInstance.getVector(),instance.getVector());
         if(currentDistance < minDistance){
+          Log.i("TEST", "TEEEESSSTt "+instance );
           minDistance = currentDistance;
           instanceClass = instance.getInstanceName();
         }

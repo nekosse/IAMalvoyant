@@ -21,6 +21,7 @@
     android:background="#00000000">
 
     <RelativeLayout
+        android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#00000000"
@@ -32,9 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/black"
-            tools:context="org.tensorflow.lite.examples.classification.CameraActivity" >
-
-        </FrameLayout>
+            tools:context="org.tensorflow.lite.examples.classification.CameraActivity" />
 
 
         <androidx.appcompat.widget.Toolbar
@@ -42,32 +41,39 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:layout_alignParentTop="true"
-            android:background="@color/design_default_color_primary"
+            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
+            android:background="@color/colorPrimary"
+            android:textAlignment="center"
             android:visibility="visible"
-            app:title="@string/app_name"
+            app:title="Demo projet IA Malvoyant"
             app:titleTextColor="@color/colorPrimaryDark">
 
 
         </androidx.appcompat.widget.Toolbar>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/takePictureButton"
+        <TextView
+            android:id="@+id/LabelTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/toolbar"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="false"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="bottom|center_horizontal"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
-            android:clickable="true"
-            app:srcCompat="@android:drawable/ic_menu_camera" />
+            android:layout_alignParentStart="false"
+            android:layout_alignParentTop="false"
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="175dp"
+            android:background="@color/semi_transparent"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="24sp"
+            tools:text="Aucun élément detecté" />
 
 
     </RelativeLayout>
 
     <include
         android:id="@+id/bottom_sheet_layout"
-        layout="@layout/layout_bottom_sheet" />
+        layout="@layout/layout_bottom_sheet"
+        android:visibility="invisible"
+        tools:visibility="invisible" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

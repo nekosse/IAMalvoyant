@@ -20,6 +20,7 @@ import android.Manifest;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.hardware.Camera;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
@@ -95,7 +96,7 @@ public abstract class CameraActivity extends AppCompatActivity
   private Runnable imageConverter;
   private LinearLayout bottomSheetLayout;
   private LinearLayout gestureLayout;
-  private BottomSheetBehavior sheetBehavior;
+  protected BottomSheetBehavior sheetBehavior;
   protected TextView recognitionTextView,
       recognition1TextView,
       recognition2TextView,
@@ -107,6 +108,7 @@ public abstract class CameraActivity extends AppCompatActivity
       cameraResolutionTextView,
       rotationTextView,
       inferenceTimeTextView,debuginfoTextView;
+  protected TextView labelTextView;
   protected ImageView bottomSheetArrowImageView;
   private ImageView plusImageView, minusImageView;
   private Spinner modelSpinner;
@@ -206,6 +208,8 @@ public abstract class CameraActivity extends AppCompatActivity
     recognition1ValueTextView = findViewById(R.id.detected_item1_value);
     recognition2TextView = findViewById(R.id.detected_item2);
     recognition2ValueTextView = findViewById(R.id.detected_item2_value);
+
+    labelTextView = findViewById(R.id.LabelTextView);
 
     frameValueTextView = findViewById(R.id.frame_info);
     cropValueTextView = findViewById(R.id.crop_info);
@@ -600,6 +604,18 @@ public abstract class CameraActivity extends AppCompatActivity
               String.format("%.2f", (100 * recognition2.getConfidence())) + "%");
       }
     }
+  }
+
+  @UiThread
+  protected void showResultsInLabelTextViewGreen(String text) {
+    labelTextView.setTextColor(Color.parseColor("#4A9F0F"));
+    labelTextView.setText(text);
+  }
+
+  @UiThread
+  protected void showResultsInLabelTextViewRed(String text) {
+    labelTextView.setTextColor(Color.parseColor("#C32F18"));
+    labelTextView.setText(text);
   }
 
   protected void showFrameInfo(String frameInfo) {

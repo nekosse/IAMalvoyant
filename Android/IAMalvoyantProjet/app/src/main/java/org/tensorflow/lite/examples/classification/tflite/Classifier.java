@@ -57,7 +57,7 @@ public abstract class Classifier {
   }
 
   /** Number of results to show in the UI. */
-  private static final int MAX_RESULTS = 1001;
+  private static final int MAX_RESULTS = 7;
 
   /** Dimensions of inputs. */
   private static final int DIM_BATCH_SIZE = 1;
@@ -96,18 +96,22 @@ public abstract class Classifier {
    */
   public static Classifier create(Activity activity, Model model, Device device, int numThreads)
       throws IOException {
-    if (model == Model.QUANTIZED) {
+    /*if (model == Model.QUANTIZED) {
       return new ClassifierQuantizedMobileNet(activity, device, numThreads);
     }
 
     if (model == Model.FLOAT) {
       return new ClassifierFloatMobileNet(activity, device, numThreads);
-    }
+    }*/
+
+    return new ClassifierFloatMobileNet(activity, device, numThreads);
 
 
 
 
-    return null;
+
+
+    //return null;
 
   }
 
